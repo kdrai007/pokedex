@@ -11,7 +11,13 @@ func (c *Client) ListLocations(pageURL *string) (shallowApiResponse, error) {
 	if pageURL != nil {
 		fullURL = *pageURL
 	}
-
+	if respData, ok := c.cache.Get(fullURL); ok {
+		locationResp := shallowApiResponse{}
+		err := json.Unmarshal(respData, &locationResp)
+		if err == nil {
+			return locationResp, nil
+		}
+	}
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
 		return shallowApiResponse{}, err
@@ -33,5 +39,7 @@ func (c *Client) ListLocations(pageURL *string) (shallowApiResponse, error) {
 	if err != nil {
 		return shallowApiResponse{}, err
 	}
+
+	c.cache.Add(fullURL, data)
 	return locationApiResp, nil
 }

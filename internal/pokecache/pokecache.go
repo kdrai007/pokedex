@@ -27,6 +27,7 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 	item, ok := c.cache[key]
+
 	return item.val, ok
 }
 func (c *Cache) reapLoop(interval time.Duration) {

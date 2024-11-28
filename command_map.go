@@ -19,9 +19,7 @@ type ApiResponse struct {
 
 var apiResponse ApiResponse
 
-func commandMap(cfg *config) error {
-	fmt.Println()
-	fmt.Println("fetching locations...")
+func commandMap(cfg *config, args ...string) error {
 	locationsResp, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationUrl)
 	if err != nil {
 		return err
@@ -38,7 +36,7 @@ func commandMap(cfg *config) error {
 	return nil
 }
 
-func commandMapB(cfg *config) error {
+func commandMapB(cfg *config, args ...string) error {
 	if cfg.prevLocationUrl == nil {
 		return errors.New("!!No previous locations")
 	}
